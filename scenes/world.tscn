@@ -1,0 +1,105 @@
+[gd_scene load_steps=15 format=3 uid="uid://bck0jwxissw6r"]
+
+[ext_resource type="PackedScene" uid="uid://dy0jgfwlfo6qu" path="res://scenes/player.tscn" id="1_qc0vh"]
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_rer25"]
+[ext_resource type="PackedScene" uid="uid://du8kj5dp3qsu1" path="res://scenes/limit_world.tscn" id="3_7alf3"]
+[ext_resource type="PackedScene" uid="uid://3k0it68200mf" path="res://scenes/gui.tscn" id="3_17q7r"]
+[ext_resource type="PackedScene" uid="uid://dm60qw032f6l1" path="res://scenes/enemy.tscn" id="5_r2bra"]
+[ext_resource type="Texture2D" uid="uid://cuntkslvdvs8l" path="res://art/Free/Main Characters/Alien/alien life.png" id="6_2ysvj"]
+[ext_resource type="Texture2D" uid="uid://cqja1dg1kroon" path="res://art/Free/background game/Starry_night_Layer_8.png" id="6_ndfrv"]
+[ext_resource type="PackedScene" uid="uid://drubtereee7ul" path="res://scenes/frut.tscn" id="7_8j6tg"]
+[ext_resource type="Texture2D" uid="uid://dsai6hivjytaq" path="res://art/Free/background game/Starry_night_Layer_2.png" id="7_nrcnx"]
+[ext_resource type="Texture2D" uid="uid://b8kwtlvdlqree" path="res://art/Free/background game/Starry_night_Layer_6.png" id="7_v4aam"]
+[ext_resource type="Texture2D" uid="uid://dae2ta1wsys3x" path="res://art/Free/background game/Starry_night_Layer_4.png" id="8_28wp7"]
+[ext_resource type="PackedScene" uid="uid://d16xb7qyfyn3t" path="res://scenes/arm.tscn" id="8_v1xfk"]
+[ext_resource type="Texture2D" uid="uid://dbraswnorb8ki" path="res://art/Free/background game/Starry_night_Layer_3.png" id="8_xww8m"]
+[ext_resource type="Texture2D" uid="uid://cq80vavvjmtgr" path="res://art/Free/background game/Starry_night_Layer_1.png" id="12_tjbmy"]
+
+[node name="World" type="Node"]
+script = ExtResource("1_rer25")
+enemy_scene = ExtResource("5_r2bra")
+fruit_scene = ExtResource("7_8j6tg")
+arm_scene = ExtResource("8_v1xfk")
+
+[node name="Parallax2D2" type="Parallax2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="Parallax2D2"]
+position = Vector2(258.25, 147.75)
+scale = Vector2(0.273698, 0.280093)
+texture = ExtResource("6_ndfrv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+light_mask = 2
+position = Vector2(82, 22)
+scale = Vector2(0.0586, 0.0510625)
+texture = ExtResource("6_2ysvj")
+
+[node name="GUI" parent="." instance=ExtResource("3_17q7r")]
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+repeat_size = Vector2(505, 0)
+repeat_times = 8
+
+[node name="TimerVelocity" type="Timer" parent="Parallax2D"]
+wait_time = 5.0
+autostart = true
+
+[node name="mountains" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(245, 170)
+scale = Vector2(0.257813, 0.230556)
+texture = ExtResource("7_v4aam")
+
+[node name="Tree2" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(250, 171)
+scale = Vector2(0.265625, 0.236111)
+texture = ExtResource("8_28wp7")
+
+[node name="Tree" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(248, 170)
+scale = Vector2(0.26237, 0.245255)
+texture = ExtResource("8_xww8m")
+
+[node name="Floor" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(256, 144.875)
+scale = Vector2(0.275, 0.31875)
+texture = ExtResource("7_nrcnx")
+
+[node name="Player" parent="." instance=ExtResource("1_qc0vh")]
+position = Vector2(54, 260)
+
+[node name="Parallax2D3" type="Parallax2D" parent="."]
+repeat_size = Vector2(1850, 0)
+repeat_times = 3
+
+[node name="Trunk" type="Sprite2D" parent="Parallax2D3"]
+position = Vector2(232, 115)
+scale = Vector2(0.263932, 0.373148)
+texture = ExtResource("12_tjbmy")
+
+[node name="LimitWorld" parent="." instance=ExtResource("3_7alf3")]
+
+[node name="CollisionShape2D" parent="LimitWorld/floor" index="0"]
+position = Vector2(252, 313)
+
+[node name="CollisionShape2D" parent="LimitWorld/limitRight" index="0"]
+position = Vector2(-5, 137.125)
+
+[node name="CollisionShape2D" parent="LimitWorld/limitLeft" index="0"]
+position = Vector2(-5, 142.438)
+
+[node name="TimerEnemy" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="TimerFrut" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="TimerBullet" type="Timer" parent="."]
+wait_time = 0.3
+
+[connection signal="timeout" from="Parallax2D/TimerVelocity" to="." method="_on_timer_velocity_timeout"]
+[connection signal="timeout" from="TimerEnemy" to="." method="_on_timer_enemy_timeout"]
+[connection signal="timeout" from="TimerFrut" to="." method="_on_timer_frut_timeout"]
+
+[editable path="LimitWorld"]

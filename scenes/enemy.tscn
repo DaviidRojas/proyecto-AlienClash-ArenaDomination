@@ -1,0 +1,71 @@
+[gd_scene load_steps=13 format=3 uid="uid://dm60qw032f6l1"]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_pjlky"]
+[ext_resource type="Texture2D" uid="uid://b47xs2u53ktfr" path="res://art/Free/Main Characters/enemy/Walk/walk01.png" id="2_4ivbk"]
+[ext_resource type="Texture2D" uid="uid://dh7pag4judnrl" path="res://art/Free/Main Characters/enemy/Walk/walk02.png" id="3_jx8tt"]
+[ext_resource type="Texture2D" uid="uid://bcca1iuqdpmus" path="res://art/Free/Main Characters/enemy/Walk/walk03.png" id="4_4jh0j"]
+[ext_resource type="AudioStream" uid="uid://bn8cwbi5u2akf" path="res://art/music/Air Woosh Underwater.mp3" id="4_n1hca"]
+[ext_resource type="Texture2D" uid="uid://dgvcpov5xokof" path="res://art/Free/Main Characters/enemy/Walk/walk04.png" id="5_yhgwk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_magpo"]
+radius = 86.6667
+height = 200.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5pnr"]
+atlas = ExtResource("2_4ivbk")
+region = Rect2(0, 0, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83q5r"]
+atlas = ExtResource("3_jx8tt")
+region = Rect2(0, 0, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mi5f2"]
+atlas = ExtResource("4_4jh0j")
+region = Rect2(0, 0, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gn1v"]
+atlas = ExtResource("5_yhgwk")
+region = Rect2(0, 0, 45, 45)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kuf0n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5pnr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_83q5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mi5f2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gn1v")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[node name="Enemy" type="Area2D" groups=["enemies"]]
+script = ExtResource("1_pjlky")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 45)
+scale = Vector2(0.3, 0.3)
+shape = SubResource("CapsuleShape2D_magpo")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3.57628e-07, 27)
+scale = Vector2(1.65556, 1.65556)
+sprite_frames = SubResource("SpriteFrames_kuf0n")
+animation = &"run"
+frame_progress = 0.153289
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_n1hca")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
